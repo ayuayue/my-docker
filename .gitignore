@@ -7,5 +7,4 @@ docker-compose.yml.*
 .vscode
 services/nginx/conf.d/*
 !services/nginx/conf.d/localhost.conf
-.env
 .vscode

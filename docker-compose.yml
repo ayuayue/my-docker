@@ -22,7 +22,8 @@ services:
     environment:
       TZ: "$TZ"
 #    restart: always
-    depends_on: php
+    # depends_on: 
+    #   -  php
     networks:
       - default
   php:
@@ -44,6 +45,7 @@ services:
       - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP_LOG_DIR}:/var/log/php
       - ${DATA_DIR}/composer:/tmp/composer
+      - ${DATA_DIR}/php:/tmp/extensions
     restart: always
     cap_add:
       - SYS_PTRACE
@@ -67,11 +69,25 @@ services:
      - ${PHP56_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
      - ${PHP56_LOG_DIR}:/var/log/php
      - ${DATA_DIR}/composer:/tmp/composer
+     - ${DATA_DIR}/php:/tmp/extensions
    restart: always
    cap_add:
      - SYS_PTRACE
    networks:
      - default
+  
+  oracle11g:
+    image: jaspeen/oracle-11g
+    container_name: oracle11g
+    ports:
+      - "1521:1521"
+    volumes:
+      - ${DATA_DIR}/oracle11g/install:/install/:rw
+      - ${DATA_DIR}/oracle11g/dpdump:/opt/oracle/dpdump/:rw
+    environment:
+      TZ: "$TZ"
+    networks:
+      - default
 
   mysql:
     image: mysql:${MYSQL_VERSION}
@@ -92,7 +108,7 @@ services:
     image: mysql:${MYSQL5_VERSION}
     container_name: mysql5
     ports:
-      - "${MYSQL5_HOST_PORT}:3305" 
+      - "${MYSQL5_HOST_PORT}:3306" 
     volumes:
       - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
       - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
@@ -181,6 +197,7 @@ services:
 
   node:
    image: node:${NODE_VERSION}
+   container_name: node
    environment:
      - NODE_ENV=production
    volumes:
