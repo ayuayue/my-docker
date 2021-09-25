@@ -1,5 +1,5 @@
 #!/bin/sh
-apk add libaio libaio-dev libnsl-dev libnsl libc6-compat && \
+# apk add libaio libaio-dev libnsl-dev libnsl libc6-compat && \
 
 cd  /tmp/extensions/oracle_instantclient 
 
