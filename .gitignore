@@ -8,5 +8,4 @@ docker-compose.yml.*
 services/nginx/conf.d/*
 services/php/oracle_instantclient/*
 !services/nginx/conf.d/localhost.conf
-.env
 .vscode
