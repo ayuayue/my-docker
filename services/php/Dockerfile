@@ -4,7 +4,10 @@ FROM ${PHP_VERSION}
 ARG TZ
 ARG PHP_EXTENSIONS
 ARG CONTAINER_PACKAGE_URL
-
+ARG LD_LIBRARY_PATH=/usr/local/instantclient_11_2
+ARG NLS_LANG="AMERICAN_AMERICA.AL32UTF8"
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH 
+ENV NLS_LANG $NLS_LANG 
 
 RUN if [ $CONTAINER_PACKAGE_URL ] ; then sed -i "s/dl-cdn.alpinelinux.org/${CONTAINER_PACKAGE_URL}/g" /etc/apk/repositories ; fi
 
@@ -34,6 +37,24 @@ RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar 
     && chmod +x /usr/bin/composer
 ENV COMPOSER_HOME=/tmp/composer
 
+# Install pdo_oci oci8 for oracle11g
+COPY ./oracle_instantclient/instantclient_11_2 /usr/local/instantclient_11_2
+# RUN  echo "export LD_LIBRARY_PATH=/usr/local/instantclient_11_2" >> /etc/profile && echo "export NLS_LANG='AMERICAN_AMERICA.AL32UTF8'" >> /etc/profile   && source /etc/profile 
+RUN  apk add  libaio-dev libaio libnsl libnsl-dev --no-cache  
+RUN ln -s /usr/local/instantclient_11_2/libclntsh.so.11.1 /usr/local/instantclient_11_2/libclntsh.so && \
+    ln -s /usr/local/instantclient_11_2/libocci.so.11.1 /usr/local/instantclient_11_2/libocci.so && \
+    ln -s /usr/lib/libnsl.so.2 /usr/lib/libnsl.so.1 
+# RUN ls -al /usr/local/instantclient_11_2/ && ls -al /usr/lib/ | grep libnsl
+# RUN echo "export LD_LIBRARY_PATH=/usr/local/instantclient_11_2" >> /etc/profile && echo "export NLS_LANG='AMERICAN_AMERICA.AL32UTF8'" >> /etc/profile   && source /etc/profile && \
+RUN export LD_LIBRARY_PATH=/usr/local/instantclient_11_2 &&export NLS_LANG='AMERICAN_AMERICA.AL32UTF8' \ 
+    && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/local/instantclient_11_2,11.2 &&docker-php-ext-install pdo_oci  \
+    && docker-php-ext-configure oci8 --with-oci8=instantclient,/usr/local/instantclient_11_2 && docker-php-ext-install oci8
+
+# install gd and mcrypt
+RUN apk add libmcrypt libmcrypt-dev freetype freetype-dev libpng libpng-dev  libvpx libvpx-dev libjpeg libjpeg-turbo libjpeg-turbo-dev libxpm libxpm-dev  --no-cache \
+    && docker-php-ext-install mcrypt \
+    && docker-php-ext-configure gd --with-gd --with-vpx-dir  --with-jpeg-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir  && docker-php-ext-install gd
+    # RUN ls /usr/local/ && cat /etc/profile
 # php image's www-data user uid & gid are 82, change them to 1000 (primary user)
 RUN apk --no-cache add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
 

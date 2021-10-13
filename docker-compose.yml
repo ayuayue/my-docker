@@ -10,7 +10,7 @@ services:
     container_name: nginx
     ports:
       - "${NGINX_HTTP_HOST_PORT}:80"
-      - "${NGINX_HTTPS_HOST_PORT}:443"
+      # - "${NGINX_HTTPS_HOST_PORT}:443"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
       - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw
@@ -22,7 +22,7 @@ services:
     environment:
       TZ: "$TZ"
 #    restart: always
-    depends_on: php
+    # depends_on: php
     networks:
       - default
   php:
