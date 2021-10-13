@@ -21,8 +21,9 @@ services:
       - ${NGINX_LOG_DIR}:/var/log/nginx/:rw
     environment:
       TZ: "$TZ"
-#    restart: always
-
+    restart: always
+    # depends_on:
+    #   - php56
     networks:
       - default
   php:
