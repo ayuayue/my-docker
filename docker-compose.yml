@@ -252,6 +252,17 @@ services:
     privileged: true
     networks:
       - default
-
+  go:
+    container_name: go
+    build: 
+      context: ./services/go
+    ports:
+      - "8088:8088"
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+    tty: true 
+    privileged: true
+    networks:
+      - default
 networks:
   default:
