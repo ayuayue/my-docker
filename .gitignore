@@ -1,8 +1,6 @@
-.env
 .idea
 .DS_Store
 nohup.out
-docker-compose.yml.*
 
 .vscode
 services/nginx/conf.d/*
