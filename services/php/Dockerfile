@@ -52,24 +52,20 @@ RUN export LD_LIBRARY_PATH=/usr/local/instantclient_11_2 &&export NLS_LANG='AMER
     && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/local/instantclient_11_2,11.2 &&docker-php-ext-install pdo_oci  \
     && docker-php-ext-configure oci8 --with-oci8=instantclient,/usr/local/instantclient_11_2 && docker-php-ext-install oci8
 
-# install gd and mcrypt
-RUN apk add libmcrypt libmcrypt-dev freetype freetype-dev libpng libpng-dev  libvpx libvpx-dev libjpeg libjpeg-turbo libjpeg-turbo-dev libxpm libxpm-dev  --no-cache \
-    && docker-php-ext-install mcrypt \
-    && docker-php-ext-configure gd --with-gd --with-vpx-dir  --with-jpeg-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir  && docker-php-ext-install gd
-    # RUN ls /usr/local/ && cat /etc/profile
+# install gd and mcrypt  php5.6
+# RUN apk add libmcrypt libmcrypt-dev freetype freetype-dev libpng libpng-dev  libvpx libvpx-dev libjpeg libjpeg-turbo libjpeg-turbo-dev libxpm libxpm-dev libxml2 libxml2-dev  --no-cache && \
+#     docker-php-ext-install mcrypt  && \
+#     docker-php-ext-configure gd --with-gd --with-vpx-dir  --with-jpeg-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir  && docker-php-ext-install gd
+# install gd  php7
+
 # php image's www-data user uid & gid are 82, change them to 1000 (primary user)
-RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
-# RUN apk --no-cache add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
+#RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
+RUN apk --no-cache add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 # RUN apk --no-cache add ca-certificates wget && \
-RUN apk add ca-certificates wget && \
-    cp sgerrand.rsa.pub /etc/apk/keys/sgerrand.rsa.pub && \
-    apk add glibc-bin-2.25-r0.apk glibc-i18n-2.25-r0.apk glibc-2.25-r0.apk 
+#     cp sgerrand.rsa.pub /etc/apk/keys/sgerrand.rsa.pub && \
+#     apk add glibc-bin-2.25-r0.apk glibc-i18n-2.25-r0.apk glibc-2.25-r0.apk 
 
-# RUN cp locale.md /locale.md && \
-#     xargs -i /usr/glibc-compat/bin/localedef -i {} -f UTF-8 {}.UTF-8 && \
-#     cat locale.md | xargs -i /usr/glibc-compat/bin/localedef -i {} -f UTF-8 {}.UTF-8
-# && \ rm -rfv locale.md
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8

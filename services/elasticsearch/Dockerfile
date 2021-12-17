@@ -113,4 +113,3 @@ RUN if [[ -z "${PLUGINS##*,amazon-ec2,*}" ]]; then \
     if [[ -z "${PLUGINS##*,analysis-pinyin,*}" ]]; then \
       printf "y\n" | elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v${ELASTICSEARCH_VERSION}/elasticsearch-analysis-pinyin-${ELASTICSEARCH_VERSION}.zip; \
     fi
-
