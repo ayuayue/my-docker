@@ -141,7 +141,6 @@ services:
     volumes:
       - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
       - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
-  #   restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL5_ROOT_PASSWORD}"
       TZ: "$TZ"
@@ -240,6 +239,19 @@ services:
    stdin_open: true
    tty: true
 
+  jdk8:
+    container_name: jdk8 #配置容器名
+    build:
+      context: ./services/java
+    ports:
+      - "8080:8080" # 暴露端口
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+    stdin_open: true # -i interactive
+    tty: true # -t tty
+    privileged: true
+    networks:
+      - default
 
 networks:
   default:
