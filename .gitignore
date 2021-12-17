@@ -3,7 +3,5 @@
 nohup.out
 
 .vscode
-services/nginx/conf.d/*
+
 services/php/oracle_instantclient/*
-!services/nginx/conf.d/localhost.conf
-.vscode
