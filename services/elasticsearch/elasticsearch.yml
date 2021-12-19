@@ -8,3 +8,8 @@ discovery.zen.minimum_master_nodes: 1
 
 http.cors.enabled: true
 http.cors.allow-origin: "*"
+
+
+discovery.zen.fd.ping_timeout: 1000s
+discovery.zen.fd.ping_retries: 10
+monitor.jvm.gc.overhead.warn: 90

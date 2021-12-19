@@ -111,8 +111,8 @@ services:
     ports:
       - "1521:1521"
     volumes:
-      - ${ORACLE_DIR}:/install/:rw
-      - ${ORACLE_DPDUMP_DIR}:/opt/oracle/dpdump/:rw
+      - ${ORACLE_DIR}/install:/install/:rw
+      - ${ORACLE_DPDUMP_DIR}/dpdump:/opt/oracle/dpdump/:rw
     environment:
       TZ: "$TZ"
     networks:
@@ -219,7 +219,6 @@ services:
      - ${DATA_DIR}/esdata/plugins:/usr/share/elasticsearch/plugins
      - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
    hostname: elasticsearch
-  #  restart: always
    ports:
      - "${ELASTICSEARCH_HOST_PORT_C}:9200"
      - "${ELASTICSEARCH_HOST_PORT_S}:9300"
