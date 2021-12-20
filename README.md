@@ -1,3 +1,52 @@
+该项目 fork 自 https://github.com/yeszao/dnmp
+自己使用过程中添加或修改
+
+PHP
+
+    加入 oracle 的 pdo_oci ,oci8 扩展,对于 php5.6 的 gd 库扩展做了补充. 
+    解决 pdo_oci 扩展的中文乱码问题
+
+NGINX
+
+    加入默认配置,thinkphp 的重定向及 thinkphp 二级目录的配置
+
+JDK
+
+    加入 openjdk8 的镜像
+
+
+ORACLE
+
+    加入 oracle11g 的镜像 安装文件需自行下载,只提供安装脚本
+    
+
+oracle11g 文档地址 [https://docs.oracle.com/cd/E11882_01/nav/portal_11.htm](https://docs.oracle.com/cd/E11882_01/nav/portal_11.htm)
+
+下载地址  [https://www.oracle.com/cn/database/enterprise-edition/downloads/oracle-db11g-linux.html#license-lightbox](https://www.oracle.com/cn/database/enterprise-edition/downloads/oracle-db11g-linux.html#license-lightbox)
+
+GO
+
+    加入 go 1.16 的镜像
+
+OTHER
+
+    其他,加入 docker-compose 对内/外部容器的链接 external_links
+
+ELASTICSEARCH
+
+```
+修改es配置,开启跨域访问
+加入 IK 分词插件(无需在线下载安装,自带插件文件)
+```
+
+
+
+____
+
+
+
+### 原 fork 项目说明
+
 DNMP（Docker + Nginx + MySQL + PHP7/5 + Redis）是一款全功能的**LNMP一键安装程序**。
 
 > 使用前最好提前阅读一遍[目录](#目录)，以便快速上手，遇到问题也能及时排除。交流QQ一群：**572041090（已满）**，二群：**300723526**。
@@ -285,6 +334,7 @@ install-php-extensions apcu
 **方法1：主机中使用composer命令**
 1. 确定composer缓存的路径。比如，我的dnmp下载在`~/dnmp`目录，那composer的缓存路径就是`~/dnmp/data/composer`。
 2. 参考[bash.alias.sample](bash.alias.sample)示例文件，将对应 php composer 函数拷贝到主机的 `~/.bashrc`文件。
+    
     > 这里需要注意的是，示例文件中的`~/dnmp/data/composer`目录需是第一步确定的目录。
 3. 让文件起效：
     ```bash
@@ -306,9 +356,9 @@ install-php-extensions apcu
             }
         }
     }
-
+    
     ```
-**方法二：容器内使用composer命令**
+    **方法二：容器内使用composer命令**
 
 还有另外一种方式，就是进入容器，再执行`composer`命令，以PHP7容器为例：
 ```bash
@@ -316,7 +366,7 @@ docker exec -it php /bin/sh
 cd /www/localhost
 composer update
 ```
-    
+
 ## 4.管理命令
 ### 4.1 服务器启动和构建命令
 如需管理服务，请在命令后面加上服务器名称，例如：
@@ -501,5 +551,4 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
 3.接着直接php容器使用`172.0.17.1:3306`连接即可
 ## License
 MIT
-
 
