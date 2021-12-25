@@ -263,5 +263,21 @@ services:
     privileged: true
     networks:
       - default
+
+    
+  freenom:
+    container_name: freenom
+    build:
+      context: ./services/freenom
+    volumes:
+      - ${FREENOM_CONF_DIR}:/conf:rw
+      - ${FREENOM_LOG_DIR}:/app/logs
+
+    networks:
+     - default
+    restart: always
+    stdin_open: true
+    tty: true
+
 networks:
   default:
