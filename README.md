@@ -5,6 +5,7 @@ PHP
 
     加入 oracle 的 pdo_oci ,oci8 扩展,对于 php5.6 的 gd 库扩展做了补充. 
     解决 pdo_oci 扩展的中文乱码问题
+    加入 PHP8, xdebug 2.7 - 3.1.2 的配置
 
 NGINX
 
@@ -28,9 +29,6 @@ GO
 
     加入 go 1.16 的镜像
 
-OTHER
-
-    其他,加入 docker-compose 对内/外部容器的链接 external_links
 
 ELASTICSEARCH
 
@@ -39,11 +37,45 @@ ELASTICSEARCH
 加入 IK 分词插件(无需在线下载安装,自带插件文件)
 ```
 
+OTHER
 
+    其他,加入 docker-compose 对内/外部容器的链接 external_links
+
+    指定版本 PHP 扩展安装 install-php-extensions xdebug-2.9.7
 
 ____
 
+PHP xdebug2配置
 
+```ini
+[XDebug]
+xdebug.remote_enable = 1
+xdebug.remote_handler = "dbgp"
+; Set to host.docker.internal on Mac and Windows, otherwise, set to host real ip
+xdebug.remote_host = host.docker.internal
+;xdebug.remote_port = 9000
+xdebug.remote_log = /var/log/php/xdebug2.log
+
+SERVER_ENV=develop
+
+yaf.use_spl_autoload=1
+```
+
+PHP xdebug3配置
+```ini
+[XDebug]
+;开启xdebug支持，不同的mode的不同的用途，详细说明请看官方文档
+xdebug.mode = develop,debug,profile,trace ;如果要多个模式一起开启，就用`,`分隔开就行
+xdebug.profiler_append = 0
+xdebug.profiler_output_name = cachegrind.out.%p
+xdebug.start_with_request = yes ;这里与原来不同了，原来如果要开启trace或profile,用的是enable_trace,enable_profile等字段
+xdebug.trigger_value=StartProfileForMe ;这里就是原来的profile_trigger_value,trace_trigger_value
+; xdebug.client_host = host.docker.internal
+xdebug.client_host = 192.168.93.1
+; xdebug.client_port = 9001
+xdebug.log = /var/log/php/xdebug2.log
+xdebug.idekey="PHPSTORM"
+```
 
 ### 原 fork 项目说明
 

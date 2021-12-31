@@ -28,6 +28,34 @@ services:
     restart: always
     networks:
       - default
+  php8:
+    build:
+      context: ./services/php
+      args:
+        PHP_VERSION: php:${PHP8_VERSION}-fpm-alpine
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+        PHP_EXTENSIONS: ${PHP8_EXTENSIONS}
+        TZ: "$TZ"
+    container_name: php8
+    extra_hosts:
+      - "master.com:192.168.93.1"
+    expose:
+      - 9501
+    external_links:
+      - oracle11g:chemdb
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+      - ${PHP8_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP8_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP8_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+      - ${DATA_DIR}/php:/tmp/extensions
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - default
+
   php:
     build:
       context: ./services/php
@@ -37,6 +65,8 @@ services:
         PHP_EXTENSIONS: ${PHP_EXTENSIONS}
         TZ: "$TZ"
     container_name: php
+    extra_hosts:
+      - "master.com:192.168.93.1"
     expose:
       - 9501
     external_links:
@@ -53,6 +83,7 @@ services:
       - SYS_PTRACE
     networks:
       - default
+      
   php71:
     build:
       context: ./services/php
@@ -137,7 +168,7 @@ services:
     image: mysql:${MYSQL5_VERSION}
     container_name: mysql5
     ports:
-      - "${MYSQL5_HOST_PORT}:3306" 
+      - "${MYSQL5_HOST_PORT}:3306"
     volumes:
       - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
       - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
@@ -218,6 +249,7 @@ services:
      - ${DATA_DIR}/esdata:/usr/share/elasticsearch/data
      - ${DATA_DIR}/esdata/plugins:/usr/share/elasticsearch/plugins
      - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
+     - ${ES_LOG_DIR}:/usr/share/elasticsearch/logs
    hostname: elasticsearch
    ports:
      - "${ELASTICSEARCH_HOST_PORT_C}:9200"
@@ -232,6 +264,8 @@ services:
      - ${SOURCE_DIR}:/www/:rw
    expose:
      - "8081"
+   ports:
+     - "${NODE_PORT}:8088"
    networks:
      - default
    restart: always
@@ -253,31 +287,16 @@ services:
       - default
   go:
     container_name: go
-    build: 
+    build:
       context: ./services/go
     ports:
       - "8088:8088"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
-    tty: true 
+    tty: true
     privileged: true
     networks:
       - default
-
-    
-  freenom:
-    container_name: freenom
-    build:
-      context: ./services/freenom
-    volumes:
-      - ${FREENOM_CONF_DIR}:/conf:rw
-      - ${FREENOM_LOG_DIR}:/app/logs
-
-    networks:
-     - default
-    restart: always
-    stdin_open: true
-    tty: true
 
 networks:
   default:

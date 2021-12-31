@@ -4,4 +4,3 @@ nohup.out
 .env
 .vscode
 
-services/php/oracle_instantclient/*
