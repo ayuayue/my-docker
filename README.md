@@ -9,7 +9,7 @@ PHP
 
 NGINX
 
-    加入默认配置,thinkphp 的重定向及 thinkphp 二级目录的配置
+    加入默认配置,thinkphp 的重定向及 thinkphp 二级目录的配置,gzip配置,跨域配置
 
 JDK
 
