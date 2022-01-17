@@ -6,10 +6,11 @@ PHP
     加入 oracle 的 pdo_oci ,oci8 扩展,对于 php5.6 的 gd 库扩展做了补充. 
     解决 pdo_oci 扩展的中文乱码问题
     加入 PHP8, xdebug 2.7 - 3.1.2 的配置
+    添加配置 opcache
 
 NGINX
 
-    加入默认配置,thinkphp 的重定向及 thinkphp 二级目录的配置,gzip配置,跨域配置
+    加入默认配置,thinkphp 的重定向及 thinkphp 二级目录的配置,gzip配置,跨域配置,加入 gzip压缩配置,修改缓存大小,超时时间
 
 JDK
 
