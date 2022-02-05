@@ -6,7 +6,7 @@ PHP
     加入 oracle 的 pdo_oci ,oci8 扩展,对于 php5.6 的 gd 库扩展做了补充. 
     解决 pdo_oci 扩展的中文乱码问题
     加入 PHP8, xdebug 2.7 - 3.1.2 的配置
-    添加配置 opcache
+    添加配置开发及线上环境的 opcache
 
 NGINX
 
@@ -50,16 +50,19 @@ PHP xdebug2配置
 
 ```ini
 [XDebug]
+zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so
 xdebug.remote_enable = 1
 xdebug.remote_handler = "dbgp"
 ; Set to host.docker.internal on Mac and Windows, otherwise, set to host real ip
-xdebug.remote_host = host.docker.internal
-;xdebug.remote_port = 9000
+xdebug.remote_host = 192.168.93.1
+xdebug.remote_port = 9001
 xdebug.remote_log = /var/log/php/xdebug2.log
 
-SERVER_ENV=develop
-
-yaf.use_spl_autoload=1
+xdebug.idekey="PHPSTORM"
+xdebug.remote_autostart=1
+xdebug.remote_connect_back=0
+xdebug.max_nesting_level=256
+xdebug.overload_var_dump=1
 ```
 
 PHP xdebug3配置
@@ -76,6 +79,33 @@ xdebug.client_host = host.docker.internal
 ; xdebug.client_port = 9001
 xdebug.log = /var/log/php/xdebug2.log
 xdebug.idekey="PHPSTORM"
+```
+PHP OPcache配置
+```ini
+[opcache]
+opcache.revalidate_freq=0
+; opcache.validate_timestamps=0 ;(在开发环境可以把这一行注释掉)
+opcache.max_accelerated_files=7963
+opcache.memory_consumption=192
+opcache.interned_strings_buffer=16
+opcache.fast_shutdown=1
+```
+
+NINGX SSL证书申请及配置
+首先在.env文件中加入 `NGINX_INSTALL_APPS=certbot`
+
+配置说明 : https://www.wolai.com/s33QhUZMK2aH8vjvTT36Z4
+
+
+NGINX 配置 laravel tp 项目及二级目录通用url重写规则
+
+```conf
+
+#  laravel Tp 通用 框架重写
+rewrite ^/(.*)/public/(.*)$ /$1/public/index.php?s=$2 last;
+# TP3.2重写
+rewrite ^/(.*)/www/(.*)$ /$1/www/index.php?s=$2 last;
+            
 ```
 
 ### 原 fork 项目说明

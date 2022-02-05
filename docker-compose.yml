@@ -12,9 +12,9 @@ services:
       - "${NGINX_HTTP_HOST_PORT}:80"
       - "${NGINX_HTTPS_HOST_PORT}:443"
     depends_on:
-      - php
-      - php71
-      - php56
+      # - php
+      # - php71
+      # - php56
     volumes:
       - ${SOURCE_DIR}:/www/:rw
       - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw
@@ -317,6 +317,7 @@ services:
       context: ./services/python
     ports:
     - "8888:8888"
+    - "5000:5000"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
     tty: true
