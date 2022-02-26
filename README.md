@@ -42,17 +42,30 @@ MYSQL
 
 设置允许外部连接
 ```
-mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
- mysql>flush privileges;
+   mysql>   GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+   mysql8>  grant all privileges on *.* to 'root'@'%' with grant option; 
+   mysql>   flush privileges;
  ```
 
-修改密码
+修改密码 mysql5.7
 ```
 mysql -u root -p
 # 登录后使用
-SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
-```
+SET PASSWORD FOR 'root'@'%' = PASSWORD('caoayu');
+ALTER USER 'root'@'%' IDENTIFIED BY 'caoayu'; # mysql8
 
+```
+修改密码 mysql8
+
+登录|连接失败处理
+> mysql #先使用无密码进入
+
+```
+update user set host='%' where user='root';
+flush privileges;
+ALTER user 'root'@'%' IDENTIFIED BY 'caoayu';
+flush privileges;
+```
 
 OTHER
 
