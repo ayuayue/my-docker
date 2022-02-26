@@ -7,6 +7,7 @@ PHP
     解决 pdo_oci 扩展的中文乱码问题
     加入 PHP8, xdebug 2.7 - 3.1.2 的配置
     添加配置开发及线上环境的 opcache
+    开启错误显示 display_errors = On
 
 NGINX
 
@@ -34,6 +35,24 @@ ELASTICSEARCH
 修改es配置,开启跨域访问
 加入 IK 分词插件(无需在线下载安装,自带插件文件)
 ```
+
+MYSQL
+
+如果启动失败,请将 data 目录中的 mysql 目录清理后再使用 docker-compose up mysql ,或者检查 data/mysql 目录是否有读写权限
+
+设置允许外部连接
+```
+mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+ mysql>flush privileges;
+ ```
+
+修改密码
+```
+mysql -u root -p
+# 登录后使用
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
+```
+
 
 OTHER
 
