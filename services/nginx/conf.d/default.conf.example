@@ -47,6 +47,17 @@ server {
     #     }
     # }
 
+    ## certbot ssl
+    # location ^~ /.well-known/acme-challenge/ {
+    #     default_type "text/plain";
+    #     root     /www;
+    # }
+
+    # location = /.well-known/acme-challenge/ {
+    #     return 404;
+    # }
+    ## certbot ssl
+
     # deny access to .htaccess files, if Apache's document root
     # concurs with nginx's one
     #
@@ -67,6 +78,12 @@ server {
 #     error_log  /var/log/nginx/nginx.localhost.error.log  warn;
 
 #     error_page  404              /404.html;
+
+    ##certbot ssl
+    # ssl_certificate /etc/letsencrypt/live/your.domain.com/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/your.domain.com/privkey.pem;
+    # ssl_trusted_certificate /etc/letsencrypt/live/your.domain.com/chain.pem;
+    ##certbot ssl
 
 #     ssl_certificate /ssl/localhost/localhost.crt;
 #     ssl_certificate_key /ssl/localhost/localhost.key;
@@ -91,6 +108,17 @@ server {
 #         include        fastcgi-php.conf;
 #         include        fastcgi_params;
 #     }
+
+# certbot ssl
+    # location ^~ /.well-known/acme-challenge/ {
+    #     default_type "text/plain";
+    #     root     /www;
+    # }
+
+    # location = /.well-known/acme-challenge/ {
+    #     return 404;
+    # }
+# certbot ssl
 
 #     deny access to .htaccess files, if Apache's document root
 #     concurs with nginx's one
