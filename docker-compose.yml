@@ -293,7 +293,7 @@ services:
     build:
       context: ./services/go
     ports:
-      - "8088:8088"
+      - "9000:9000"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
     tty: true
