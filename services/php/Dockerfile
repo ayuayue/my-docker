@@ -4,6 +4,7 @@ FROM ${PHP_VERSION}
 ARG TZ
 ARG PHP_EXTENSIONS
 ARG CONTAINER_PACKAGE_URL
+
 ARG LD_LIBRARY_PATH=/usr/local/instantclient_11_2
 ARG ORACLE_HOME=/usr/local/instantclient_11_2
 ARG TNS_ADMIN=/usr/local/instantclient_11_2
@@ -15,12 +16,16 @@ ENV NLS_LANG $NLS_LANG
 ENV ORACLE_HOME $ORACLE_HOME 
 ENV TNS_ADMIN $TNS_ADMIN
 ENV ORACLE_BASE $ORACLE_BASE
+
 RUN if [ $CONTAINER_PACKAGE_URL ] ; then sed -i "s/dl-cdn.alpinelinux.org/${CONTAINER_PACKAGE_URL}/g" /etc/apk/repositories ; fi
 
 
 COPY ./extensions /tmp/extensions
 WORKDIR /tmp/extensions
 
+RUN chmod +x install.sh \
+    && sh install.sh \
+    && rm -rf /tmp/extensions
 
 ADD ./extensions/install-php-extensions  /usr/local/bin/
 
@@ -61,6 +66,9 @@ RUN export LD_LIBRARY_PATH=/usr/local/instantclient_11_2 &&export NLS_LANG='AMER
 #     docker-php-ext-install mcrypt  && \
 #     docker-php-ext-configure gd --with-gd --with-vpx-dir  --with-jpeg-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir  && docker-php-ext-install gd
 # install gd  php7
+
+# install strace telnet
+RUN apk add  strace tcpdump file binutils busybox-extras vim
 
 # php image's www-data user uid & gid are 82, change them to 1000 (primary user)
 #RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data

@@ -425,6 +425,22 @@ services:
     networks:
       - default
 
+  hyperf:
+    build:
+      context: ./services/hyperf
+    container_name: hyperf
+    ports:
+      - "9501:9501"
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+    privileged: true
+    restart: always
+    tty: true
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - default
+
 
 networks:
   default:
