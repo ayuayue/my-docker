@@ -2,6 +2,8 @@
 port                    = 3306
 default-character-set   = utf8mb4
 
+[mysql]
+prompt="\\u@\\h :\\d\\r:\\m:\\s>"
 
 [mysqld]
 user                    = mysql
