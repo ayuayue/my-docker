@@ -52,6 +52,7 @@ MYSQL
 
 设置允许外部连接
 
+
 ```
 mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
  mysql>flush privileges;
@@ -59,10 +60,36 @@ mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRAN
 
 修改密码
 
+
+
+```bash
+   mysql>   GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+   mysql8>  grant all privileges on *.* to 'root'@'%' with grant option; 
+   mysql>   flush privileges;
+
 ```
+
+修改密码 mysql5.7
+
+```bash
 mysql -u root -p
 # 登录后使用
-SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
+SET PASSWORD FOR 'root'@'%' = PASSWORD('caoayu');
+ALTER USER 'root'@'%' IDENTIFIED BY 'caoayu'; # mysql8
+```
+
+
+修改密码 mysql8
+
+登录|连接失败处理
+
+> mysql #先使用无密码进入
+
+```bash
+update user set host='%' where user='root';
+flush privileges;
+ALTER user 'root'@'%' IDENTIFIED BY 'caoayu';
+flush privileges;
 ```
 
 OTHER
@@ -135,6 +162,27 @@ NGINX 配置 laravel tp 项目及二级目录通用url重写规则
 rewrite ^/(.*)/public/(.*)$ /$1/public/index.php?s=$2 last;
 # TP3.2重写
 rewrite ^/(.*)/www/(.*)$ /$1/www/index.php?s=$2 last;
+```
+
+NGINX 配置反向代理，及反向代理目录下某些静态资源加载失败解决方案（重写静态资源url）
+
+```conf
+# 反向代理
+location /tp/ {
+    proxy_pass http://127.0.0.1/tp6/public/;
+
+    # 携带客户端IP等信息
+    proxy_redirect off;
+    proxy_set_header Host $host:$server_port;
+    proxy_set_header  X-Real-IP  $remote_addr;
+    proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+ 
+}
+# 配置反向代理后某些静态资源请求路径失败，重写url为项目目录
+location ~ /tp/.*\.(gif|jpg|jpeg|bmp|png)$
+{
+    rewrite '^/tp/(.*)/(.*)\.(png|jpg|gif)$' /tp6/public/$1/$2.$3 last;
+}
 ```
 
 ### 原 fork 项目说明
