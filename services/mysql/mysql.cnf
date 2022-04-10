@@ -1,9 +1,8 @@
 [client]
 port                    = 3306
 default-character-set   = utf8mb4
-
-[mysql]
-prompt="\\u@\\h :\\d\\r:\\m:\\s>"
+user                    = caoayu
+password                = 'caoayu'
 
 [mysqld]
 user                    = mysql
@@ -26,7 +25,11 @@ slow-query-log-file     = /var/lib/mysql/mysql.slow.log
 log-error               = /var/lib/mysql/mysql.error.log
 
 default-time-zone       = '+8:00'
+log_timestamps          = SYSTEM
 
 [mysql]
+
 default-character-set   = utf8mb4
 #collation-server = utf8mb4_unicode_ci
+
+prompt="(\u@\h:\p) [\d] \\r:\\m:\\s > "

@@ -1,9 +1,9 @@
 [client]
 port                    = 3306
 default-character-set   = utf8mb4
+user                    = caoayu
+password                = 'caoayu'
 
-[mysql]
-prompt="\\u@\\h :\\d\\r:\\m:\\s>"
 
 [mysqld]
 user                    = mysql
@@ -27,5 +27,29 @@ log-error               = /var/lib/mysql/mysql.error.log
 
 default-time-zone       = '+8:00'
 
+log_timestamps          = SYSTEM
+
+#require_secure_transport = ON
+plugin-load-add=validate_password.so
+
+# skip-grant-tables # 忘记密码
+# default_password_lifetime=0 # 密码过期时间
+
 [mysql]
 default-character-set   = utf8mb4
+prompt="(\u@\h:\p) [\d] \\r:\\m:\\s > "
+
+[mysqld_multi]
+mysqld = /usr/bin/mysqld_safe
+mysqladmin = /usr/bin/mysqladmin
+
+user       = root
+log = /var/lib/mysql/mysql_multi.log
+
+
+[mysqld2]
+socket     = /data/mysql.sock1
+port       = 3307
+datadir    = /data
+user       = caoayu
+log_error = /data/mysql.error.log
