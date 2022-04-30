@@ -39,8 +39,8 @@ services:
         PHP_EXTENSIONS: ${PHP8_EXTENSIONS}
         TZ: "$TZ"
     container_name: php8
-    extra_hosts:
-      - "master.com:192.168.93.1"
+    # extra_hosts:
+      # - "master.com:192.168.93.1"
     expose:
       - 9501
     external_links:
@@ -67,8 +67,8 @@ services:
         PHP_EXTENSIONS: ${PHP_EXTENSIONS}
         TZ: "$TZ"
     container_name: php
-    extra_hosts:
-      - "master.com:192.168.93.1"
+    # extra_hosts:
+      # - "tsinghua.kuaiqucai.com:114.116.97.162"
     expose:
       - 9501
     external_links:
