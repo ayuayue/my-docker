@@ -146,6 +146,7 @@ services:
     volumes:
       - ${ORACLE_DIR}/install:/install/:rw
       - ${ORACLE_DPDUMP_DIR}/dpdump:/opt/oracle/dpdump/:rw
+      - ${SOURCE_DIR}:/www/:rw
     environment:
       TZ: "$TZ"
     networks:
@@ -159,6 +160,7 @@ services:
     volumes:
       - ${MYSQL_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
       - ${DATA_DIR}/mysql:/var/lib/mysql/:rw
+      - ${SOURCE_DIR}:/www/:rw
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
@@ -174,6 +176,7 @@ services:
     volumes:
       - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
       - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
+      - ${SOURCE_DIR}:/www/:rw
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL5_ROOT_PASSWORD}"
@@ -189,6 +192,7 @@ services:
    volumes:
      - ${REDIS_CONF_FILE}:/etc/redis.conf:ro
      - ${DATA_DIR}/redis:/data/:rw
+     - ${SOURCE_DIR}:/www/:rw
    restart: always
    entrypoint: ["redis-server", "/etc/redis.conf"]
    environment:
@@ -230,6 +234,7 @@ services:
    volumes:
      - ${DATA_DIR}/mongo:/data/db:rw
      - ${DATA_DIR}/mongo_key:/mongo:rw
+     - ${SOURCE_DIR}:/www/:rw
    ports:
       - "${MONGODB_HOST_PORT}:27017"
    networks:
@@ -253,6 +258,7 @@ services:
      - ${DATA_DIR}/esdata/plugins:/usr/share/elasticsearch/plugins
      - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
      - ${ES_LOG_DIR}:/usr/share/elasticsearch/logs
+     - ${SOURCE_DIR}:/www/:rw
    hostname: elasticsearch
    ports:
      - "${ELASTICSEARCH_HOST_PORT_C}:9200"
