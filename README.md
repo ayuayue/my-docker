@@ -11,6 +11,16 @@ PHP
 开启错误显示 display_errors = On
 ```
 
+PHP 扩展安装
+
+1. install-php-extensions xdebug
+2. export PHP_EXTENSIONS=pcntl  && sh /tmp/extensions/install.sh
+3. pecl install xdebug
+4. docker-php-source extract  && cd /usr/src/php/ext/pcntl && phpize && ./configure && make && make install
+5. docker cp source_dir php:/usr/src/php/ext  然后进入docker容器,编译安装
+
+
+
 NGINX
 
 ```
