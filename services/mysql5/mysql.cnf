@@ -1,8 +1,8 @@
 [client]
 port                    = 3306
 default-character-set   = utf8mb4
-user                    = caoayu
-password                = 'caoayu'
+# user                    = caoayu
+# password                = 'caoayu'
 
 
 [mysqld]
@@ -30,7 +30,7 @@ default-time-zone       = '+8:00'
 log_timestamps          = SYSTEM
 
 #require_secure_transport = ON
-plugin-load-add=validate_password.so
+# plugin-load-add=validate_password.so
 
 #skip-grant-tables # 忘记密码
 default_password_lifetime=0 # 密码过期时间
