@@ -8,7 +8,8 @@ default-character-set   = utf8mb4
 [mysqld]
 user                    = mysql
 port                    = 3306
-sql_mode                = ""
+# sql_mode                = ""
+sql_mode                = ONLY_FULL_GROUP_BY,NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 
 default-storage-engine  = InnoDB
 default-authentication-plugin   = mysql_native_password
@@ -35,6 +36,12 @@ log_timestamps          = SYSTEM
 #skip-grant-tables # 忘记密码
 default_password_lifetime=0 # 密码过期时间
 
+# session memory
+sort_buffer_size = 32M 
+tmp_table_size = 32M
+
+#innodb
+innodb_buffer_pool_size = 1G
 
 [mysql]
 default-character-set   = utf8mb4
