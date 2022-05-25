@@ -265,10 +265,11 @@ services:
      - "${ELASTICSEARCH_HOST_PORT_S}:9300"
 
   node:
-   image: node:${NODE_VERSION}
    container_name: node
-   environment:
-     - NODE_ENV=production
+   build:
+      context: ./services/node
+      args:
+        NODE_VERSION: node:${NODE_VERSION}
    volumes:
      - ${SOURCE_DIR}:/www/:rw
    expose:
