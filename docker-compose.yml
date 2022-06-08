@@ -13,7 +13,6 @@ services:
       - "${NGINX_HTTPS_HOST_PORT}:443"
     depends_on:
       - php
-      - php71
       - php56
     volumes:
       - ${SOURCE_DIR}:/www/:rw
