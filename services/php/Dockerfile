@@ -44,8 +44,14 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 
 # Install composer and change it's cache home
-RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
-    && chmod +x /usr/bin/composer \
+# RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
+#     && chmod +x /usr/bin/composer \
+#     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && mv composer.phar /usr/local/bin/composer \ 
+    && php -r "unlink('composer-setup.php');" \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ENV COMPOSER_HOME=/tmp/composer
 
