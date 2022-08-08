@@ -1,4 +1,4 @@
 *
 !.gitignore
 !gzip.conf
-!default.conf.example
+!*.example
