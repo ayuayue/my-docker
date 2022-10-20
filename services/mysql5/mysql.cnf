@@ -42,7 +42,7 @@ tmp_table_size = 32M
 
 #innodb
 innodb_buffer_pool_size = 1G
-
+lower_case_table_names=2
 [mysql]
 default-character-set   = utf8mb4
 prompt="(\u@\h:\p) [\d] \\r:\\m:\\s > "

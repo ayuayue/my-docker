@@ -380,7 +380,7 @@ expose_php = On
 ; Maximum execution time of each script, in seconds
 ; http://php.net/max-execution-time
 ; Note: This directive is hardcoded to 0 for the CLI SAPI
-max_execution_time = 30
+max_execution_time = 180
 
 ; Maximum amount of time each script may spend parsing request data. It's a good
 ; idea to limit this time on productions servers in order to eliminate unexpectedly
@@ -1926,19 +1926,19 @@ opcache.fast_shutdown=1
 ; End:
 
 [XDebug]
-zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so
-xdebug.remote_enable = 1
-xdebug.remote_handler = "dbgp"
-; Set to host.docker.internal on Mac and Windows, otherwise, set to host real ip
-xdebug.remote_host = 192.168.93.1
-xdebug.remote_port = 9001
-xdebug.remote_log = /var/log/php/xdebug2.log
+# zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so
+# xdebug.remote_enable = 0
+# xdebug.remote_handler = "dbgp"
+# ; Set to host.docker.internal on Mac and Windows, otherwise, set to host real ip
+# xdebug.remote_host = 192.168.93.1
+# xdebug.remote_port = 9001
+# xdebug.remote_log = /var/log/php/xdebug2.log
 
-xdebug.idekey="PHPSTORM"
-xdebug.remote_autostart=1
-xdebug.remote_connect_back=0
-xdebug.max_nesting_level=256
-xdebug.overload_var_dump=1
+# xdebug.idekey="PHPSTORM"
+# xdebug.remote_autostart=1
+# xdebug.remote_connect_back=0
+# xdebug.max_nesting_level=256
+# xdebug.overload_var_dump=1
 [xhprof]
 ;xhprof.output_dir = /var/log/php/xhprof.log
 

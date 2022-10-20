@@ -32,13 +32,13 @@ ADD ./extensions/install-php-extensions  /usr/local/bin/
 RUN chmod uga+x /usr/local/bin/install-php-extensions
 
 # RUN apk --no-cache add tzdata \
-RUN apk  add tzdata \
+RUN apk --no-cache add tzdata \
     && cp "/usr/share/zoneinfo/$TZ" /etc/localtime \
     && echo "$TZ" > /etc/timezone
 
 
 # Fix: https://github.com/docker-library/php/issues/240
-RUN apk add gnu-libiconv libstdc++  --repository http://${CONTAINER_PACKAGE_URL}/alpine/edge/community/ --allow-untrusted
+RUN apk add --no-cache gnu-libiconv libstdc++  --repository http://${CONTAINER_PACKAGE_URL}/alpine/edge/community/ --allow-untrusted
 # RUN apk add gnu-libiconv libstdc++ --no-cache --repository http://${CONTAINER_PACKAGE_URL}/alpine/edge/community/ --allow-untrusted
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
@@ -58,7 +58,7 @@ ENV COMPOSER_HOME=/tmp/composer
 # Install pdo_oci oci8 for oracle11g
 COPY ./oracle_instantclient/instantclient_11_2 /usr/local/instantclient_11_2
 # RUN  echo "export LD_LIBRARY_PATH=/usr/local/instantclient_11_2" >> /etc/profile && echo "export NLS_LANG='AMERICAN_AMERICA.AL32UTF8'" >> /etc/profile   && source /etc/profile 
-RUN  apk add  libaio-dev libaio libnsl libnsl-dev --no-cache  
+RUN  apk add --no-cache libaio-dev libaio libnsl libnsl-dev --no-cache  
 RUN ln -s /usr/local/instantclient_11_2/libclntsh.so.11.1 /usr/local/instantclient_11_2/libclntsh.so && \
     ln -s /usr/local/instantclient_11_2/libocci.so.11.1 /usr/local/instantclient_11_2/libocci.so && \
     ln -s /usr/lib/libnsl.so.2 /usr/lib/libnsl.so.1 
@@ -85,7 +85,7 @@ RUN apk --no-cache add shadow && usermod -u 1000 www-data && groupmod -g 1000 ww
 
 
 # 加入常用的软件
-RUN apk add  strace tcpdump file binutils busybox-extras vim
+RUN apk add --no-cache strace tcpdump file binutils busybox-extras vim
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
