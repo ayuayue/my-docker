@@ -18,6 +18,10 @@ server {
     location = /50x.html {
         root   /usr/share/nginx/html;
     }
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
     # proxy the PHP scripts to Apache listening on 127.0.0.1:80
     #
     #location ~ \.php$ {
