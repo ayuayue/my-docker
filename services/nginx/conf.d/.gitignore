@@ -2,4 +2,4 @@
 !.gitignore
 !gzip.conf
 !*.example
-!default.conf
+!default.conf.bak
