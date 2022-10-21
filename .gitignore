@@ -1,6 +1,6 @@
 .idea
 .DS_Store
 nohup.out
-.env
+# .env
 .vscode
 
