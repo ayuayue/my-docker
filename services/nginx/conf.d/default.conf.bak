@@ -4,7 +4,7 @@ server {
     root   /www;
     autoindex on;
     index   index index.html index.htm;
-    #charset koi8-r;
+    charset utf-8;
     
     # access_log /dev/null;
     access_log  /var/log/nginx/default.access.log  main;
