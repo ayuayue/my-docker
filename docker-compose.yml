@@ -284,16 +284,37 @@ services:
   jdk8:
     container_name: jdk8 #配置容器名
     build:
-      context: ./services/java
+      context: ./services/jdk
+      args:
+        JDK_VERSION: ${JDK8_VERSION}
     ports:
       - "8080:8080" # 暴露端口
     volumes:
       - ${SOURCE_DIR}:/www/:rw
+      - ${MVN_SETTING_FILE}:~/.m2/setting.xml
     stdin_open: true # -i interactive
     tty: true # -t tty
     privileged: true
     networks:
       - default
+
+  jdk11:
+    container_name: jdk11 #配置容器名
+    build:
+      context: ./services/jdk
+      args:
+        JDK_VERSION: ${JDK11_VERSION}
+    ports:
+      - "8080:8080" # 暴露端口
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+      - ${MVN_SETTING_FILE}:/root/.m2/settings.xml
+    stdin_open: true # -i interactive
+    tty: true # -t tty
+    privileged: true
+    networks:
+      - default
+
   go:
     container_name: go
     build:

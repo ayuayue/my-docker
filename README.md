@@ -195,6 +195,9 @@ location ~ /tp/.*\.(gif|jpg|jpeg|bmp|png)$
 }
 ```
 
+# 加入 jdk 镜像，支持 jdk8，jdk11 等。并安装 maven ，设置阿里云仓库源。
+
+
 ### 原 fork 项目说明
 
 DNMP（Docker + Nginx + MySQL + PHP7/5 + Redis）是一款全功能的**LNMP一键安装程序**。
