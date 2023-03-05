@@ -26,7 +26,7 @@ log-error               = /var/lib/mysql/mysql.error.log
 
 default-time-zone       = '+8:00'
 log_timestamps          = SYSTEM
-
+lower_case_table_names=1 # 忽略大小写
 
 [mysql]
 
