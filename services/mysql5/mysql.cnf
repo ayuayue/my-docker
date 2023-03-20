@@ -39,10 +39,9 @@ default_password_lifetime=0 # 密码过期时间
 # session memory
 sort_buffer_size = 32M 
 tmp_table_size = 32M
-
 #innodb
 innodb_buffer_pool_size = 1G
-lower_case_table_names=2
+lower_case_table_names=1 # 忽略大小写
 [mysql]
 default-character-set   = utf8mb4
 prompt="(\u@\h:\p) [\d] \\r:\\m:\\s > "

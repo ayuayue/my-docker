@@ -287,6 +287,7 @@ services:
       context: ./services/jdk
       args:
         JDK_VERSION: ${JDK8_VERSION}
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
     ports:
       - "8080:8080" # 暴露端口
     volumes:
@@ -304,6 +305,7 @@ services:
       context: ./services/jdk
       args:
         JDK_VERSION: ${JDK11_VERSION}
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
     ports:
       - "8080:8080" # 暴露端口
     volumes:
