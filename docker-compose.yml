@@ -469,7 +469,17 @@ services:
       - SYS_PTRACE
     networks:
       - default
-
-
+  rancher:
+    build:
+      context: ./services/rancher
+    container_name: rancher
+    ports:
+      - "801:80"
+    volumes:
+      - ./data/rancher:/var/lib/rancher
+    tty: true
+    privileged: true
+    networks:
+      - default
 networks:
   default:

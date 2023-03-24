@@ -19,7 +19,7 @@ php () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        dnmp_php php "$@"
+        php php "$@"
 }
 
 # php5.6 cli
@@ -32,13 +32,13 @@ php56 () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        my-docker_php56 php "$@"
+        php56 php "$@"
 }
 
 
 
 # php7 composer
-composer () {
+composer74 () {
     tty=
     tty -s && tty=--tty
     docker run \
@@ -49,7 +49,7 @@ composer () {
         --volume ~/dnmp/data/composer:/tmp/composer \
         --volume $(pwd):/app \
         --workdir /app \
-        my-docker_php composer "$@"
+        php74 composer "$@"
 }
 
 
@@ -63,10 +63,23 @@ mvn () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        my-docker_jdk11 mvn "$@"
+        jdk11 mvn "$@"
 }
 
+
 # mysql
+mysql5 () {
+    tty=
+    tty -s && tty=--tty
+    docker run \
+        $tty \
+        --interactive \
+        --rm \
+        --volume $PWD:/www:rw \
+        --workdir /www \
+        mysql5 mysql "$@"
+}
+
 mysql () {
     tty=
     tty -s && tty=--tty

@@ -1,5 +1,5 @@
 # 设置要转换的 Docker Compose 文件路径
-$composeFile = "k8s/docker-compose-resolved.yaml"
+$composeFile = "docker-compose-resolved.yaml"
 $directory = "k8s"
 #读取 .env 变量
 Get-Content ".env" |  Where-Object { $_.Trim() -and $_.Trim()[0] -ne '#' } |   ForEach-Object {
@@ -15,9 +15,9 @@ sudo kompose convert -f "docker-compose.yml" -o k8s
 #     $env:PATH += ";$HOME\bin"
 # }
 # 先转为普通 docker-compose 配置文件
-# sudo docker compose config > $composeFile
+sudo docker compose config > $composeFile
 # 转换 Docker Compose 文件为 Kubernetes YAML 文件
-# sudo kompose convert -f $composeFile -o k8s
+sudo kompose convert -f $composeFile -o k8s
 
 # Write-Host "Docker Compose 文件已成功转换为 Kubernetes YAML 文件。"
 
@@ -31,3 +31,5 @@ sudo kompose convert -f "docker-compose.yml" -o k8s
 # }
 # Get-ChildItem -Path . -Filter *-deployment.yaml | %{kubectl apply -f $_.FullName}
 # Get-ChildItem -Path . -Filter *-deployment.yaml | %{kubectl apply -f $_.FullName}
+
+kubectl apply -f $directory

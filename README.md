@@ -1,6 +1,9 @@
 该项目 fork 自 https://github.com/yeszao/dnmp
 自己使用过程中添加或修改
 
+# 2023-03-24 新增nginx忽略配置
+增加 bad_configs 配置项，防止某些配置错误导致的 nginx 启动失败
+
 # 2023-03-19 加入k8s转换及支持
 1. 添加 kompose 脚本，将 docker-compose 配置转为 k8s 的 yaml 配置文件，并使用 kubectl apply 应用每一个service。
 2. 

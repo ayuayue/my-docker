@@ -1,0 +1,445 @@
+networks:
+  default: {}
+services:
+  elasticsearch:
+    build:
+      args:
+        ELASTICSEARCH_PLUGINS: ''
+        ELASTICSEARCH_VERSION: 6.7.0
+      context: /mnt/hgfs/share/my-docker/services/elasticsearch
+    container_name: elasticsearch
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      TZ: Asia/Shanghai
+      discovery.type: single-node
+    hostname: elasticsearch
+    ports:
+    - 9200:9200/tcp
+    - 9300:9300/tcp
+    volumes:
+    - /mnt/hgfs/share/my-docker/data/esdata:/usr/share/elasticsearch/data:rw
+    - /mnt/hgfs/share/my-docker/data/esdata/plugins:/usr/share/elasticsearch/plugins:rw
+    - /mnt/hgfs/share/my-docker/services/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    - /mnt/hgfs/share/my-docker/logs/es:/usr/share/elasticsearch/logs:rw
+    - /mnt/hgfs/share/my-docker:/www:rw
+  go:
+    build:
+      context: /mnt/hgfs/share/my-docker/services/go
+    container_name: go
+    networks:
+      default: null
+    ports:
+    - 9000:9000/tcp
+    privileged: true
+    tty: true
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+  hyperf:
+    build:
+      context: /mnt/hgfs/share/my-docker/services/hyperf
+    cap_add:
+    - SYS_PTRACE
+    container_name: hyperf
+    networks:
+      default: null
+    ports:
+    - 9501:9501/tcp
+    privileged: true
+    restart: always
+    tty: true
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+  jdk11:
+    build:
+      args:
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        JDK_VERSION: '11'
+      context: /mnt/hgfs/share/my-docker/services/jdk
+    container_name: jdk11
+    networks:
+      default: null
+    ports:
+    - 8080:8080/tcp
+    privileged: true
+    stdin_open: true
+    tty: true
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/jdk/settings.xml:/root/.m2/settings.xml:rw
+  jdk8:
+    build:
+      args:
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        JDK_VERSION: '8'
+      context: /mnt/hgfs/share/my-docker/services/jdk
+    container_name: jdk8
+    networks:
+      default: null
+    ports:
+    - 8080:8080/tcp
+    privileged: true
+    stdin_open: true
+    tty: true
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/jdk/settings.xml:~/.m2/setting.xml:rw
+  kibana:
+    container_name: kibana
+    depends_on:
+    - elasticsearch
+    environment:
+      I18N_LOCALE: zh-CN
+      TZ: Asia/Shanghai
+      elasticsearch.hosts: http://elasticsearch:9200
+    hostname: kibana
+    image: kibana:7.1.1
+    ports:
+    - 5601:5601/tcp
+    restart: always
+  logstash:
+    container_name: logstash
+    depends_on:
+    - elasticsearch
+    environment:
+      TZ: Asia/Shanghai
+    hostname: logstash
+    image: logstash:7.1.1
+    ports:
+    - 9600:9600/tcp
+    - 5044:5044/tcp
+    restart: always
+  memcached:
+    container_name: memcached
+    environment:
+      MEMCACHED_CACHE_SIZE: '128'
+    image: memcached:alpine
+    networks:
+      default: null
+    ports:
+    - 11211:11211/tcp
+  mongodb:
+    command: --auth
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: '123456'
+      MONGO_INITDB_ROOT_USERNAME: root
+      TZ: Asia/Shanghai
+    image: mongo:4.1
+    networks:
+      default: null
+    ports:
+    - 27017:27017/tcp
+    volumes:
+    - /mnt/hgfs/share/my-docker/data/mongo:/data/db:rw
+    - /mnt/hgfs/share/my-docker/data/mongo_key:/mongo:rw
+    - /mnt/hgfs/share/my-docker:/www:rw
+  mysql:
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      TZ: Asia/Shanghai
+    image: mysql:8.0.13
+    networks:
+      default: null
+    ports:
+    - 3306:3306/tcp
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker/services/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+    - /mnt/hgfs/share/my-docker/data/mysql:/var/lib/mysql:rw
+    - /mnt/hgfs/share/my-docker:/www:rw
+  mysql5:
+    container_name: mysql5
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      TZ: Asia/Shanghai
+    image: mysql:5.7.28
+    networks:
+      default: null
+    ports:
+    - 3305:3306/tcp
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker/services/mysql5/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+    - /mnt/hgfs/share/my-docker/data/mysql5:/var/lib/mysql:rw
+    - /mnt/hgfs/share/my-docker:/www:rw
+  nginx:
+    build:
+      args:
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        NGINX_INSTALL_APPS: certbot
+        NGINX_VERSION: nginx:1.19.1-alpine
+      context: /mnt/hgfs/share/my-docker/services/nginx
+    cap_add:
+    - SYS_PTRACE
+    container_name: nginx
+    environment:
+      TZ: Asia/Shanghai
+    networks:
+      default: null
+    ports:
+    - 80:80/tcp
+    - 443:443/tcp
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/nginx/ssl:/ssl:rw
+    - /mnt/hgfs/share/my-docker/services/nginx/conf.d:/etc/nginx/conf.d:rw
+    - /mnt/hgfs/share/my-docker/services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - /mnt/hgfs/share/my-docker/services/nginx/fastcgi-php.conf:/etc/nginx/fastcgi-php.conf:ro
+    - /mnt/hgfs/share/my-docker/services/nginx/fastcgi_params:/etc/nginx/fastcgi_params:ro
+    - /mnt/hgfs/share/my-docker/logs/nginx:/var/log/nginx:rw
+  node:
+    build:
+      args:
+        NODE_VERSION: node:14.18.2-alpine
+      context: /mnt/hgfs/share/my-docker/services/node
+    container_name: node
+    expose:
+    - '8081'
+    networks:
+      default: null
+    ports:
+    - 8088:8088/tcp
+    restart: always
+    stdin_open: true
+    tty: true
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+  openresty:
+    container_name: openresty
+    environment:
+      TZ: Asia/Shanghai
+    image: openresty/openresty:alpine
+    networks:
+      default: null
+    ports:
+    - 80:80/tcp
+    - 443:443/tcp
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/openresty/conf.d:/etc/nginx/conf.d:ro
+    - /mnt/hgfs/share/my-docker/services/openresty/ssl:/ssl:rw
+    - /mnt/hgfs/share/my-docker/services/openresty/openresty.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+    - /mnt/hgfs/share/my-docker/services/openresty/fastcgi-php.conf:/usr/local/openresty/nginx/conf/fastcgi-php.conf:ro
+    - /mnt/hgfs/share/my-docker/services/openresty/fastcgi_params:/usr/local/openresty/nginx/conf/fastcgi_params:ro
+    - /mnt/hgfs/share/my-docker/logs/nginx:/var/log/nginx:rw
+  oracle11g:
+    container_name: oracle11g
+    environment:
+      TZ: Asia/Shanghai
+    image: jaspeen/oracle-11g
+    networks:
+      default: null
+    ports:
+    - 1521:1521/tcp
+    volumes:
+    - /mnt/hgfs/share/my-docker/data/chemdb/install/install:/install:rw
+    - /mnt/hgfs/share/my-docker/data/chemdb/dpdump/dpdump:/opt/oracle/dpdump:rw
+    - /mnt/hgfs/share/my-docker:/www:rw
+  php:
+    build:
+      args:
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        PHP_EXTENSIONS: pdo_mysql,mbstring,curl,opcache,xdebug,redis,xlswriter,gd,zip
+          bcmath soap ldap
+        PHP_VERSION: php:7.4.7-fpm-alpine
+        TZ: Asia/Shanghai
+      context: /mnt/hgfs/share/my-docker/services/php
+    cap_add:
+    - SYS_PTRACE
+    container_name: php
+    expose:
+    - 9501
+    external_links:
+    - oracle11g:chemdb
+    networks:
+      default: null
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/php/php.ini:/usr/local/etc/php/php.ini:ro
+    - /mnt/hgfs/share/my-docker/services/php/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf:rw
+    - /mnt/hgfs/share/my-docker/logs/php74:/var/log/php:rw
+    - /mnt/hgfs/share/my-docker/data/composer:/tmp/composer:rw
+    - /mnt/hgfs/share/my-docker/data/php:/tmp/extensions:rw
+  php56:
+    build:
+      args:
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        PHP_EXTENSIONS: pdo_mysql,mbstring,curl,opcache,xdebug
+        PHP_VERSION: php:5.6.40-fpm-alpine
+        TZ: Asia/Shanghai
+      context: /mnt/hgfs/share/my-docker/services/php
+    cap_add:
+    - SYS_PTRACE
+    container_name: php56
+    expose:
+    - 9501
+    external_links:
+    - oracle11g:chemdb
+    networks:
+      default: null
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/php56/php.ini:/usr/local/etc/php/php.ini:ro
+    - /mnt/hgfs/share/my-docker/services/php56/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf:rw
+    - /mnt/hgfs/share/my-docker/logs/php56:/var/log/php:rw
+    - /mnt/hgfs/share/my-docker/data/composer:/tmp/composer:rw
+    - /mnt/hgfs/share/my-docker/data/php:/tmp/extensions:rw
+  php71:
+    build:
+      args:
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        PHP_EXTENSIONS: pdo_mysql,mbstring,curl,opcache,xdebug
+        PHP_VERSION: php:7.1-fpm-alpine
+        TZ: Asia/Shanghai
+      context: /mnt/hgfs/share/my-docker/services/php
+    cap_add:
+    - SYS_PTRACE
+    container_name: php71
+    expose:
+    - 9501
+    external_links:
+    - oracle11g:chemdb
+    networks:
+      default: null
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/php71/php.ini:/usr/local/etc/php/php.ini:ro
+    - /mnt/hgfs/share/my-docker/services/php71/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf:rw
+    - /mnt/hgfs/share/my-docker/logs/php71:/var/log/php:rw
+    - /mnt/hgfs/share/my-docker/data/composer:/tmp/composer:rw
+    - /mnt/hgfs/share/my-docker/data/php:/tmp/extensions:rw
+  php8:
+    build:
+      args:
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        PHP_EXTENSIONS: pdo_mysql,mbstring,curl,opcache,xdebug
+        PHP_VERSION: php:8.0-fpm-alpine
+        TZ: Asia/Shanghai
+      context: /mnt/hgfs/share/my-docker/services/php
+    cap_add:
+    - SYS_PTRACE
+    container_name: php8
+    expose:
+    - 9501
+    external_links:
+    - oracle11g:chemdb
+    networks:
+      default: null
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/services/php8/php.ini:/usr/local/etc/php/php.ini:ro
+    - /mnt/hgfs/share/my-docker/services/php8/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf:rw
+    - /mnt/hgfs/share/my-docker/logs/php8:/var/log/php:rw
+    - /mnt/hgfs/share/my-docker/data/composer:/tmp/composer:rw
+    - /mnt/hgfs/share/my-docker/data/php:/tmp/extensions:rw
+  phpmyadmin:
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: '3306'
+      TZ: Asia/Shanghai
+    image: phpmyadmin/phpmyadmin:latest
+    networks:
+      default: null
+    ports:
+    - 8080:801/tcp
+    volumes:
+    - /mnt/hgfs/share/my-docker/services/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
+    - /mnt/hgfs/share/my-docker/services/phpmyadmin/php-phpmyadmin.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini:ro
+  phpredisadmin:
+    container_name: phpredisadmin
+    environment:
+      REDIS_1_HOST: redis
+      REDIS_1_PORT: '6379'
+      TZ: Asia/Shanghai
+    image: erikdubbelboer/phpredisadmin:latest
+    networks:
+      default: null
+    ports:
+    - 8081:80/tcp
+  python:
+    build:
+      context: /mnt/hgfs/share/my-docker/services/python
+    container_name: python
+    networks:
+      default: null
+    ports:
+    - 8888:8888/tcp
+    - 5000:5000/tcp
+    privileged: true
+    tty: true
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+  rabbitmq:
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_PASS: mypass
+      RABBITMQ_DEFAULT_USER: myuser
+      TZ: Asia/Shanghai
+    image: rabbitmq:management
+    networks:
+      default: null
+    ports:
+    - 5672:5672/tcp
+    - 15672:15672/tcp
+  redis:
+    container_name: redis
+    entrypoint:
+    - redis-server
+    - /etc/redis.conf
+    environment:
+      TZ: Asia/Shanghai
+    image: redis:5.0.3-alpine
+    networks:
+      default: null
+    ports:
+    - 6379:6379/tcp
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker/services/redis/redis.conf:/etc/redis.conf:ro
+    - /mnt/hgfs/share/my-docker/data/redis:/data:rw
+    - /mnt/hgfs/share/my-docker:/www:rw
+  sql-web:
+    build:
+      context: /mnt/hgfs/share/my-docker/services/soar-web
+    container_name: sql-web
+    networks:
+      default: null
+    ports:
+    - 5077:5077/tcp
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+  supervisor:
+    build:
+      args:
+        ALPINE_VERSION: alpine:3.12
+        CONTAINER_PACKAGE_URL: mirrors.aliyun.com
+        TZ: Asia/Shanghai
+      context: /mnt/hgfs/share/my-docker/services/supervisor
+    cap_add:
+    - SYS_PTRACE
+    command:
+    - /bin/sh
+    - -c
+    - 'supervisord -n -c /etc/supervisor/supervisord.conf
+
+      '
+    container_name: supervisor
+    networks:
+      default: null
+    ports:
+    - 9001:9001/tcp
+    restart: always
+    volumes:
+    - /mnt/hgfs/share/my-docker:/www:rw
+    - /mnt/hgfs/share/my-docker/logs/supervisor:/var/log/supervisor:rw
+    - /mnt/hgfs/share/my-docker/services/supervisor/conf.d:/etc/supervisor/conf.d:rw
+    - /mnt/hgfs/share/my-docker/services/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf:ro
+version: '3.0'
+
