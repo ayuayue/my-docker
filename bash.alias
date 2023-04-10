@@ -19,7 +19,7 @@ php () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        php php "$@"
+        my-docker_php php "$@"
 }
 
 # php5.6 cli
@@ -32,7 +32,7 @@ php56 () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        php56 php "$@"
+        my-docker_php56 php "$@"
 }
 
 
@@ -46,10 +46,8 @@ composer74 () {
         --interactive \
         --rm \
         --user www-data:www-data \
-        --volume ~/dnmp/data/composer:/tmp/composer \
-        --volume $(pwd):/app \
-        --workdir /app \
-        php74 composer "$@"
+        --workdir /www \
+        my-docker_php composer "$@"
 }
 
 
@@ -63,7 +61,7 @@ mvn () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        jdk11 mvn "$@"
+        my-docker_jdk11 mvn "$@"
 }
 
 
@@ -77,7 +75,7 @@ mysql5 () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        mysql5 mysql "$@"
+        mysql:5.7.28 mysql "$@"
 }
 
 mysql () {
@@ -89,5 +87,5 @@ mysql () {
         --rm \
         --volume $PWD:/www:rw \
         --workdir /www \
-        mysql mysql "$@"
+        mysql:8.0.13 mysql "$@"
 }
