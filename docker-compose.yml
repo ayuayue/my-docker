@@ -499,5 +499,12 @@ services:
       - "/var/opt/bytebase"
       - "--port"
       - "5678"
+
+  subconverter:
+    image: tindy2013/subconverter:latest
+    ports:
+      - 25500:25500
+    restart: always
+    
 networks:
   default:
