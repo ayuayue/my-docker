@@ -8,4 +8,4 @@
 echo '请输入域名,如果需要泛域名请使用 *.example.com'
 read domain
 echo "输入域名的$domain"
-certbot certonly --preferred-challenges dns --manual -d "$domain" --server https://acme-v02.api.letsencrypt.org/directory --dry-run
+certbot certonly --preferred-challenges dns --manual -d "$domain" --server https://acme-v02.api.letsencrypt.org/directory 
