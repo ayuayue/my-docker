@@ -469,6 +469,7 @@ services:
       - SYS_PTRACE
     networks:
       - default
+
   rancher:
     build:
       context: ./services/rancher
@@ -481,5 +482,22 @@ services:
     privileged: true
     networks:
       - default
+
+  bytebase:
+    image: bytebase/bytebase:2.0.0
+    restart: always
+    ports:
+      - 5678:5678
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5678/healthz", "||", "exit", "1"]
+      interval: 5m
+      timeout: 60s
+    volumes:
+      - ./data/bytebase:/var/opt/bytebase
+    command:
+      - "--data"
+      - "/var/opt/bytebase"
+      - "--port"
+      - "5678"
 networks:
   default:
