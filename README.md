@@ -3,7 +3,7 @@
 
 
 
-# 2023-03-19 加入k8s转换及支持
+# 2023-03-19 加入k8s转换及支持(未完善，暂不可用)
 1. 添加 kompose 脚本，将 docker-compose 配置转为 k8s 的 yaml 配置文件，并使用 kubectl apply 应用每一个service。
 
 
