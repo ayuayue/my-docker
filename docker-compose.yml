@@ -292,7 +292,7 @@ services:
       - "8080:8080" # 暴露端口
     volumes:
       - ${SOURCE_DIR}:/www/:rw
-      - ${MVN_SETTING_FILE}:~/.m2/setting.xml
+      - ${MVN_SETTING_FILE}:/root/.m2/setting.xml
     stdin_open: true # -i interactive
     tty: true # -t tty
     privileged: true
